@@ -293,10 +293,10 @@ namespace project {
         public init(emitX:number, emitY:number, parentVX:number, parentVY:number):void {
             this.x = emitX;
             this.y = emitY;
-            this._life = 70 + Math.random() * 20;
+            this._life = 100 + Math.random() * 30;
             this._count = 0;
             this.vx = parentVX + (Math.random() - 0.5) * 4;
-            this.vy = parentVY + 4 + Math.random() * 2;
+            this.vy = parentVY - 8 - Math.random() * 4;
             this.vr = (Math.random() - 0.5) * 2;
 
             this.isDead = false;
@@ -305,7 +305,7 @@ namespace project {
             let colorHSL:string = createjs.Graphics.getHSL(
                 new Date().getTime() / 20 + Math.random() * 5,
                 60,
-                10
+                20
             );
             this.color = colorHSL;
         }

@@ -254,15 +254,15 @@ var project;
         Particle.prototype.init = function (emitX, emitY, parentVX, parentVY) {
             this.x = emitX;
             this.y = emitY;
-            this._life = 70 + Math.random() * 20;
+            this._life = 100 + Math.random() * 30;
             this._count = 0;
             this.vx = parentVX + (Math.random() - 0.5) * 4;
-            this.vy = parentVY + 4 + Math.random() * 2;
+            this.vy = parentVY - 8 - Math.random() * 4;
             this.vr = (Math.random() - 0.5) * 2;
             this.isDead = false;
             this.alpha = 1;
             this.rotation = 20 * Math.PI * (Math.random() - 0.5);
-            var colorHSL = createjs.Graphics.getHSL(new Date().getTime() / 20 + Math.random() * 5, 60, 10);
+            var colorHSL = createjs.Graphics.getHSL(new Date().getTime() / 20 + Math.random() * 5, 60, 20);
             this.color = colorHSL;
         };
         /*

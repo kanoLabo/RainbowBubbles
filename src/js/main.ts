@@ -1,6 +1,8 @@
 /// <reference path="../typings/tweenjs/tweenjs.d.ts" />
 /// <reference path="../typings/easeljs/easeljs.d.ts" />
 
+declare var WebFont;
+
 namespace project {
     /*
      * パーティクルモーションのクラス
@@ -62,8 +64,6 @@ namespace project {
         private _particleEmitter:ParticleEmitter;   // パーティクル発生装置のインスタンス
         private _bg:createjs.Shape; // 背景
         private _tickCount:number = 0;
-
-
 
         public constructor() {
             super();
@@ -152,7 +152,6 @@ namespace project {
         ];
         private _browserNum:number;
 
-
         public constructor() {
             super();
             this._emitX = 0;
@@ -239,8 +238,7 @@ namespace project {
         /*
          * ブラウザアイコンの文字列ばゲットバッカーズゥ！
          */
-        private getIconStr():string
-        {
+        private getIconStr():string {
             let browserIndex:number = Math.floor(this._browserNum * Math.random());
             let iconUniCode:string = this._browserUnicodes[browserIndex];
             // Unicode から文字コードに変換
@@ -340,5 +338,18 @@ namespace project {
 }
 
 window.addEventListener("load", (event)=> {
-    let main:project.ParticleCreator = new project.ParticleCreator();
+    WebFont.load({
+        custom: {
+            families: ['FontAwesome'],
+            urls: [
+                'http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css'
+            ],
+            testStrings: {
+                'FontAwesome': '\uf001'
+            }
+        },
+        active: function ():void {
+            new project.ParticleCreator();
+        }
+    });
 });

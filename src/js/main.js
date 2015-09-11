@@ -293,6 +293,19 @@ var project;
     })(createjs.Text);
 })(project || (project = {}));
 window.addEventListener("load", function (event) {
-    var main = new project.ParticleCreator();
+    WebFont.load({
+        custom: {
+            families: ['FontAwesome'],
+            urls: [
+                'http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css'
+            ],
+            testStrings: {
+                'FontAwesome': '\uf001'
+            }
+        },
+        active: function () {
+            new project.ParticleCreator();
+        }
+    });
 });
 //# sourceMappingURL=main.js.map

@@ -1,7 +1,7 @@
 /*
  * パーティクルモーションのクラス
  * */
-import * as WebFont from "webfontloader";
+import Bitmap = createjs.Bitmap;
 
 class ParticleCreator {
   private _stage:createjs.Stage;  // ステージ
@@ -83,7 +83,7 @@ class MainLayer extends createjs.Container {
    * */
   private drawBG(bgWidth:number, bgHeight:number):void {
     this._bg.graphics.clear();
-    this._bg.graphics.beginLinearGradientFill(["#ebfaff", "#7fddfd"], [0, 1], 0, 0, 0, bgHeight)
+    this._bg.graphics.beginLinearGradientFill(["#383838", "#474747"], [0, 1], 0, 0, 0, bgHeight)
       .drawRect(0, 0, bgWidth, bgHeight)
       .endFill();
   }
@@ -114,8 +114,7 @@ class MainLayer extends createjs.Container {
     this._particleEmitter.update(mouseX, mouseY);
 
     if (this._isMouseDown) {
-      if (this._tickCount % 2 == 0)
-        this._particleEmitter.emitParticle();
+      this._particleEmitter.emitParticle();
       this._tickCount++;
 
       if (this._tickCount >= 1000)
@@ -138,14 +137,7 @@ class ParticleEmitter extends createjs.Container {
   private _animationParticles:Particle[] = [];
   // パーティクルのオブジェクトプール。アニメーションがされていないパーティクルがここに待機している。
   private _particlePool:Particle[] = [];
-  // ブラウザのユニコードうにうに(^^)
-  private _browserUnicodes:string[] = [
-    "f269",
-    "f26b",
-    "f268",
-    "f26a",
-    "f267"
-  ];
+
   private _browserNum:number;
 
   public constructor() {
@@ -154,7 +146,6 @@ class ParticleEmitter extends createjs.Container {
     this._emitY = 0;
     this._vx = 0;
     this._vy = 0;
-    this._browserNum = this._browserUnicodes.length;
   }
 
   /*
@@ -196,15 +187,15 @@ class ParticleEmitter extends createjs.Container {
       let particle:Particle = this._animationParticles[i];
       if (!particle.isDead) {
         if (particle.y >= windowHeight) {
-          particle.vy *= -0.9;
+          particle.vy *= -0.5;
           particle.y = windowHeight;
         }
 
         if (particle.x >= windowWidth) {
-          particle.vx *= -0.9;
+          particle.vx *= -0.4;
           particle.x = windowWidth;
         } else if (particle.x <= 0) {
-          particle.vx *= -0.9;
+          particle.vx *= -0.4;
           particle.x = 0;
         }
 
@@ -226,23 +217,8 @@ class ParticleEmitter extends createjs.Container {
       return this._particlePool.shift();
     }
     else {
-      let iconStr:string = this.getIconStr();
-      return new Particle(iconStr);
+      return new Particle();
     }
-  }
-
-  /*
-   * ブラウザアイコンの文字列ばゲットバッカーズゥ！
-   */
-  private getIconStr():string {
-    let browserIndex:number = Math.floor(this._browserNum * Math.random());
-    let iconUniCode:string = this._browserUnicodes[browserIndex];
-    // Unicode から文字コードに変換
-    let iconInt = parseInt(iconUniCode, 16);
-    // 文字コードから文字列に変換する
-    let iconStr = String.fromCharCode(iconInt);
-    // CreateJS のテキストを作成
-    return iconStr;
   }
 
   /*
@@ -263,7 +239,7 @@ class ParticleEmitter extends createjs.Container {
 /*
  * パーティクルのクラス
  * */
-class Particle extends createjs.Text {
+class Particle extends createjs.Container {
   private _life:number;   // パーティクルの寿命
   private _count:number;  // パーティクルの年齢。時間経過とともに加算されていく。
   public vx:number; // 速度X
@@ -271,12 +247,19 @@ class Particle extends createjs.Text {
   public vr:number; // 回転
   public isDead:boolean;  // パーティクルが寿命を迎えたかどうか。
 
-  public constructor(text:string) {
-    let fontSize:number = 12 + Math.floor(70 * Math.random());
-    super(text, fontSize + "px FontAwesome");
+  public constructor() {
+
+    super();
+
+    const sudaNum:number = Math.floor(Math.random() * 3) + 1;
+
+    const bitmap:createjs.Bitmap = new Bitmap(`./images/suda${sudaNum}.png`);
+    bitmap.x = -50;
+    bitmap.y = -50;
+    this.addChild(bitmap);
 
     // 加算で重ねる
-    //this.compositeOperation = "lighter";
+    this.compositeOperation = "lighter";
     this.mouseEnabled = false;
   }
 
@@ -287,21 +270,15 @@ class Particle extends createjs.Text {
   public init(emitX:number, emitY:number, parentVX:number, parentVY:number):void {
     this.x = emitX;
     this.y = emitY;
-    this._life = 100 + Math.random() * 30;
+    this._life = 200 + Math.random() * 30;
     this._count = 0;
-    this.vx = parentVX + (Math.random() - 0.5) * 4;
-    this.vy = parentVY - 8 - Math.random() * 4;
-    this.vr = (Math.random() - 0.5) * 2;
+    this.vx = parentVX + (Math.random() - 0.5) * 10;
+    this.vy = parentVY - 8 - Math.random() * 10;
+    this.vr = (Math.random() - 0.5) * 5;
 
     this.isDead = false;
     this.alpha = 1;
-    this.rotation = 20 * Math.PI * (Math.random() - 0.5);
-    let colorHSL:string = createjs.Graphics.getHSL(
-      new Date().getTime() / 20 + Math.random() * 5,
-      60,
-      20
-    );
-    this.color = colorHSL;
+    this.rotation = 50 * Math.PI * (Math.random() - 0.5);
   }
 
   /*
@@ -314,9 +291,9 @@ class Particle extends createjs.Text {
     this._count++;
     if (this._count <= this._life) {
       this.x += this.vx;
-      this.vy += 0.5;
+      this.vy += 0.6;
       this.y += this.vy;
-      //this.rotation += this.vr;
+      this.rotation += this.vr;
 
       // 死にそうになったら点滅を開始
       if (this._count >= this._life / 2) {
@@ -332,20 +309,6 @@ class Particle extends createjs.Text {
   }
 }
 
-window.addEventListener("load", (event) => {
-  WebFont.load({
-    custom: {
-      families: ["FontAwesome"],
-      urls: [
-        "http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css"
-      ],
-      testStrings: {
-        "FontAwesome": "\uf001"
-      }
-    },
-    active: function ():void {
-      new ParticleCreator();
-    }
-  });
-
+window.addEventListener("DOMContentLoaded", (event) => {
+  new ParticleCreator();
 });

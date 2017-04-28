@@ -1,8 +1,8 @@
-declare var WebFont;
-
 /*
  * パーティクルモーションのクラス
  * */
+import * as WebFont from "webfontloader";
+
 class ParticleCreator {
   private _stage:createjs.Stage;  // ステージ
   private _canvas:HTMLCanvasElement;  // ステージ

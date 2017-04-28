@@ -1,8 +1,8 @@
 {
-  "name": "kano-ts-starter",
+  "name": "RainbowBubbles",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://ics-kano@github.com/tonkotsuboy/kano-ts-starter.git",
+  "repository": "",
   "author": "tonkotsuboy <t.kano.624@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -13,6 +13,7 @@
     "tslint": "gulp tsLint"
   },
   "devDependencies": {
+    "@types/easeljs": "^0.8.36",
     "browser-sync": "^2.18.8",
     "es6-promise": "^4.1.0",
     "gulp": "github:gulpjs/gulp#4.0",

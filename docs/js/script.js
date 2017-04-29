@@ -238,9 +238,9 @@ var ParticleEmitter = (function (_super) {
         for (var i = 0; i < this._animationParticles.length; i++) {
             var particle = this._animationParticles[i];
             if (!particle.isDead) {
-                if (particle.y >= windowHeight) {
+                if (particle.y >= windowHeight - 50) {
                     particle.vy *= -0.5;
-                    particle.y = windowHeight;
+                    particle.y = windowHeight - 50;
                 }
                 if (particle.x >= windowWidth) {
                     particle.vx *= -0.4;

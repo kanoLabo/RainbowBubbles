@@ -186,9 +186,9 @@ class ParticleEmitter extends createjs.Container {
     for (let i:number = 0; i < this._animationParticles.length; i++) {
       let particle:Particle = this._animationParticles[i];
       if (!particle.isDead) {
-        if (particle.y >= windowHeight) {
+        if (particle.y >= windowHeight -50) {
           particle.vy *= -0.5;
-          particle.y = windowHeight;
+          particle.y = windowHeight -50;
         }
 
         if (particle.x >= windowWidth) {

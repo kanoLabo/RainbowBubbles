@@ -2,19 +2,26 @@
  * メインのレイヤー
  * */
 import {ParticleEmitter} from "./ParticleEmitter";
+import {ParticleSettingData} from "./ParticleSettingData";
 
 export class MainLayer extends createjs.Container {
   private _isMouseDown: boolean;   // マウスが押されているかどうか
   private _particleEmitter: ParticleEmitter;   // パーティクル発生装置のインスタンス
   private _bg: createjs.Shape; // 背景
   private _tickCount: number = 0;
+  private _data: ParticleSettingData;
 
   public constructor() {
     super();
+  }
+
+  public init(data: ParticleSettingData): void {
+    this._data = data;
     this._bg = new createjs.Shape();
     this.drawBG(800, 600);
     this.addChild(this._bg);
     this._particleEmitter = new ParticleEmitter();  // パーティクル発生装置のインスタンスを作成
+    this._particleEmitter.init(this._data);
     this.addChild(this._particleEmitter);
 
     this.addEventListener("tick", (event) => this.tickHandler(event));
@@ -31,7 +38,7 @@ export class MainLayer extends createjs.Container {
    * */
   private drawBG(bgWidth: number, bgHeight: number): void {
     this._bg.graphics.clear();
-    this._bg.graphics.beginLinearGradientFill(["#222222", "#000000"], [0, 1], 0, 0, 0, bgHeight)
+    this._bg.graphics.beginLinearGradientFill(this._data.bgColor, [0, 1], 0, 0, 0, bgHeight)
       .drawRect(0, 0, bgWidth, bgHeight)
       .endFill();
   }

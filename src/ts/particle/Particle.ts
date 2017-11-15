@@ -29,7 +29,10 @@ export class Particle extends createjs.Container {
    * パーティクルの初期化
    * @param parentVX, parentVY :親コンテナの速度。パーティクルの速度に影響を与える。
    */
-  public init(emitX: number, emitY: number, parentVX: number, parentVY: number): void {
+  public init(emitX: number,
+              emitY: number,
+              parentVX: number,
+              parentVY: number): void {
     this.x = emitX;
     this.y = emitY;
     this._life = 200 + Math.random() * 30;

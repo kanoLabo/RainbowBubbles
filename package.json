@@ -13,7 +13,7 @@
     "tslint": "gulp tsLint"
   },
   "devDependencies": {
-    "@types/easeljs": "^0.8.36",
+    "@types/easeljs": "^1.0.0",
     "@types/webfontloader": "^1.6.28",
     "browser-sync": "^2.18.8",
     "es6-promise": "^4.1.0",
@@ -22,11 +22,11 @@
     "gulp-plumber": "^1.1.0",
     "gulp-tslint": "^8.0.0",
     "require-dir": "^0.3.1",
-    "ts-loader": "^2.0.3",
-    "tslint": "^5.1.0",
-    "typescript": "^2.3.1",
+    "ts-loader": "^3.1.1",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1",
     "webfontloader": "^1.6.27",
-    "webpack": "^2.4.1",
-    "webpack-stream": "^3.2.0"
+    "webpack": "^3.8.1",
+    "webpack-stream": "^4.0.0"
   }
 }

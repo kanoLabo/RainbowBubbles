@@ -31,7 +31,7 @@ export class MainLayer extends createjs.Container {
    * */
   private drawBG(bgWidth: number, bgHeight: number): void {
     this._bg.graphics.clear();
-    this._bg.graphics.beginLinearGradientFill(["#383838", "#474747"], [0, 1], 0, 0, 0, bgHeight)
+    this._bg.graphics.beginLinearGradientFill(["#222222", "#000000"], [0, 1], 0, 0, 0, bgHeight)
       .drawRect(0, 0, bgWidth, bgHeight)
       .endFill();
   }

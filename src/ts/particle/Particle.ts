@@ -13,11 +13,9 @@ export class Particle extends createjs.Container {
 
     super();
 
-    const sudaNum: number = Math.floor(Math.random() * 3) + 1;
-
-    const bitmap: createjs.Bitmap = new createjs.Bitmap(`./images/suda${sudaNum}.png`);
-    bitmap.x = -50;
-    bitmap.y = -50;
+    const sudaNum: number = Math.floor(Math.random() * 5) + 1;
+    
+    const bitmap: createjs.Bitmap = new createjs.Bitmap(`./images/star${sudaNum}.png`);
     this.addChild(bitmap);
 
     // 加算で重ねる
@@ -38,7 +36,7 @@ export class Particle extends createjs.Container {
     this._life = 200 + Math.random() * 30;
     this._count = 0;
     this.vx = parentVX + (Math.random() - 0.5) * 10;
-    this.vy = parentVY - 8 - Math.random() * 10;
+    this.vy = parentVY + 2 + (Math.random() - 0.5) * 2;
     this.vr = (Math.random() - 0.5) * 5;
 
     this.isDead = false;
@@ -56,7 +54,7 @@ export class Particle extends createjs.Container {
     this._count++;
     if (this._count <= this._life) {
       this.x += this.vx;
-      this.vy += 0.6;
+      this.vy -= 0.6;
       this.y += this.vy;
       this.rotation += this.vr;
 

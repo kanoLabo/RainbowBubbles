@@ -38,7 +38,7 @@ export class MainLayer extends createjs.Container {
    * */
   private drawBG(bgWidth: number, bgHeight: number): void {
     this._bg.graphics.clear();
-    this._bg.graphics.beginLinearGradientFill(this._data.bgColor, [0, 1], 0, 0, 0, bgHeight)
+    this._bg.graphics.beginRadialGradientFill(this._data.bgColor, [0, 1], bgWidth / 2, bgHeight, bgWidth, bgWidth / 2, bgHeight, 0)
       .drawRect(0, 0, bgWidth, bgHeight)
       .endFill();
   }
@@ -69,7 +69,10 @@ export class MainLayer extends createjs.Container {
     this._particleEmitter.update(mouseX, mouseY);
 
     if (this._isMouseDown) {
-      this._particleEmitter.emitParticle();
+      for (let i = 0; i < 3; i++) {
+        this._particleEmitter.emitParticle();
+      }
+
       this._tickCount++;
 
       if (this._tickCount >= 1000) {

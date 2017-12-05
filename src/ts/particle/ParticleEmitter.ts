@@ -1,5 +1,4 @@
 import {Particle} from "./Particle";
-import {ParticleSettingData} from "./ParticleSettingData";
 
 /**
  * パーティクル発生装置
@@ -18,14 +17,11 @@ export class ParticleEmitter extends createjs.Container {
 
   private _browserNum: number;
 
-  private _data: ParticleSettingData;
-
   public constructor() {
     super();
   }
 
-  public init(data: ParticleSettingData) {
-    this._data = data;
+  public init() {
     this._emitX = 0;
     this._emitY = 0;
     this._vx = 0;
@@ -75,10 +71,7 @@ export class ParticleEmitter extends createjs.Container {
   private updateParticle(i: number, windowHeight: number, windowWidth: number) {
     let particle: Particle = this._animationParticles[i];
     if (!particle.isDead) {
-      if (this._data.bounse) {
-        this.checkParticleBounse(particle, windowHeight, windowWidth);
-      }
-
+      this.checkParticleBounse(particle, windowHeight, windowWidth);
       particle.update();
     }
     else {

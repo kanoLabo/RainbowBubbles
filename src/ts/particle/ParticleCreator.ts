@@ -1,7 +1,6 @@
 import {MainLayer} from "./MainLayer";
-import {ParticleSettingData} from "./ParticleSettingData";
 
-export default class ParticleCreator1 {
+export default class ParticleCreator {
   private _stage: createjs.Stage;  // ステージ
   private _canvas: HTMLCanvasElement;  // ステージ
   private _mainLayer: MainLayer;   // メインのレイヤー
@@ -9,7 +8,7 @@ export default class ParticleCreator1 {
   public constructor() {
   }
 
-  public init(data: ParticleSettingData): void {
+  public init(): void {
     // ステージを準備
     this._canvas = <HTMLCanvasElement> document.getElementById("myCanvas");
     this._stage = new createjs.Stage(this._canvas);
@@ -24,7 +23,7 @@ export default class ParticleCreator1 {
     createjs.Ticker.addEventListener("tick", (event) => this.tickeHandler(event));
     // メインのレイヤーを配置
     this._mainLayer = new MainLayer();
-    this._mainLayer.init(data);
+    this._mainLayer.init();
     this._stage.addChild(this._mainLayer);
     // リサイズイベント
     this.resizeHandler();

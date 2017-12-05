@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -68,24 +65,29 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-/*
- * パーティクルモーションのクラス
- * */
-var Bitmap = createjs.Bitmap;
-var ParticleCreator = (function () {
-    function ParticleCreator() {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ParticleCreator1_1 = __webpack_require__(1);
+var ParticleSettingData_1 = __webpack_require__(5);
+var settingData = new ParticleSettingData_1.ParticleSettingData();
+addEventListener("DOMContentLoaded", function () { return new ParticleCreator1_1.default().init(settingData); });
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var MainLayer_1 = __webpack_require__(2);
+var ParticleCreator1 = /** @class */ (function () {
+    function ParticleCreator1() {
+    }
+    ParticleCreator1.prototype.init = function (data) {
         var _this = this;
         // ステージを準備
         this._canvas = document.getElementById("myCanvas");
@@ -98,16 +100,17 @@ var ParticleCreator = (function () {
         createjs.Ticker.timingMode = createjs.Ticker.RAF;
         createjs.Ticker.addEventListener("tick", function (event) { return _this.tickeHandler(event); });
         // メインのレイヤーを配置
-        this._mainLayer = new MainLayer();
+        this._mainLayer = new MainLayer_1.MainLayer();
+        this._mainLayer.init(data);
         this._stage.addChild(this._mainLayer);
         // リサイズイベント
         this.resizeHandler();
         window.addEventListener("resize", function () { return _this.resizeHandler(); });
-    }
+    };
     /*
      * Tick Handler
      * */
-    ParticleCreator.prototype.tickeHandler = function (event) {
+    ParticleCreator1.prototype.tickeHandler = function (event) {
         if (!event.paused) {
             this._stage.update();
         }
@@ -115,7 +118,7 @@ var ParticleCreator = (function () {
     /*
      * リサイズのイベント処理
      * */
-    ParticleCreator.prototype.resizeHandler = function () {
+    ParticleCreator1.prototype.resizeHandler = function () {
         var windowWidth = window.innerWidth;
         var windowHeight = window.innerHeight;
         // ステージのサイズをwindowのサイズに変更
@@ -124,26 +127,52 @@ var ParticleCreator = (function () {
         // メインレイヤーにリサイズイベントを通知
         this._mainLayer.resizeHandler(windowWidth, windowHeight);
     };
-    return ParticleCreator;
+    return ParticleCreator1;
 }());
+exports.default = ParticleCreator1;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 /*
  * メインのレイヤー
  * */
-var MainLayer = (function (_super) {
+var ParticleEmitter_1 = __webpack_require__(3);
+var MainLayer = /** @class */ (function (_super) {
     __extends(MainLayer, _super);
     function MainLayer() {
         var _this = _super.call(this) || this;
         _this._tickCount = 0;
-        _this._bg = new createjs.Shape();
-        _this.drawBG(800, 600);
-        _this.addChild(_this._bg);
-        _this._particleEmitter = new ParticleEmitter(); // パーティクル発生装置のインスタンスを作成
-        _this.addChild(_this._particleEmitter);
-        _this.addEventListener("tick", function (event) { return _this.tickHandler(event); });
-        _this.addEventListener("mousedown", function (event) { return _this.mouseDownHandler(event); });
-        _this.addEventListener("pressup", function (event) { return _this.mouseUpHandler(event); });
         return _this;
     }
+    MainLayer.prototype.init = function (data) {
+        var _this = this;
+        this._data = data;
+        this._bg = new createjs.Shape();
+        this.drawBG(800, 600);
+        this.addChild(this._bg);
+        this._particleEmitter = new ParticleEmitter_1.ParticleEmitter(); // パーティクル発生装置のインスタンスを作成
+        this._particleEmitter.init(this._data);
+        this.addChild(this._particleEmitter);
+        this.addEventListener("tick", function (event) { return _this.tickHandler(event); });
+        this.addEventListener("mousedown", function (event) { return _this.mouseDownHandler(event); });
+        this.addEventListener("pressup", function (event) { return _this.mouseUpHandler(event); });
+    };
     MainLayer.prototype.resizeHandler = function (windowWidth, windowHeight) {
         this.drawBG(windowWidth, windowHeight);
     };
@@ -152,7 +181,7 @@ var MainLayer = (function (_super) {
      * */
     MainLayer.prototype.drawBG = function (bgWidth, bgHeight) {
         this._bg.graphics.clear();
-        this._bg.graphics.beginLinearGradientFill(["#383838", "#474747"], [0, 1], 0, 0, 0, bgHeight)
+        this._bg.graphics.beginLinearGradientFill(this._data.bgColor, [0, 1], 0, 0, 0, bgHeight)
             .drawRect(0, 0, bgWidth, bgHeight)
             .endFill();
     };
@@ -162,15 +191,15 @@ var MainLayer = (function (_super) {
     MainLayer.prototype.mouseDownHandler = function (event) {
         this._isMouseDown = true;
     };
-    /*
+    /**
      * マウスを離した時の処理
-     * */
+     */
     MainLayer.prototype.mouseUpHandler = function (event) {
         this._isMouseDown = false;
     };
-    /*
+    /**
      * Tickイベントで実行される処理
-     * */
+     */
     MainLayer.prototype.tickHandler = function (event) {
         // マウスの座標
         var mouseX = this.getStage().mouseX;
@@ -180,16 +209,38 @@ var MainLayer = (function (_super) {
         if (this._isMouseDown) {
             this._particleEmitter.emitParticle();
             this._tickCount++;
-            if (this._tickCount >= 1000)
+            if (this._tickCount >= 1000) {
                 this._tickCount = 0;
+            }
         }
     };
     return MainLayer;
 }(createjs.Container));
-/*
+exports.MainLayer = MainLayer;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Particle_1 = __webpack_require__(4);
+/**
  * パーティクル発生装置
- * */
-var ParticleEmitter = (function (_super) {
+ */
+var ParticleEmitter = /** @class */ (function (_super) {
     __extends(ParticleEmitter, _super);
     function ParticleEmitter() {
         var _this = _super.call(this) || this;
@@ -197,15 +248,18 @@ var ParticleEmitter = (function (_super) {
         _this._animationParticles = [];
         // パーティクルのオブジェクトプール。アニメーションがされていないパーティクルがここに待機している。
         _this._particlePool = [];
-        _this._emitX = 0;
-        _this._emitY = 0;
-        _this._vx = 0;
-        _this._vy = 0;
         return _this;
     }
-    /*
+    ParticleEmitter.prototype.init = function (data) {
+        this._data = data;
+        this._emitX = 0;
+        this._emitY = 0;
+        this._vx = 0;
+        this._vy = 0;
+    };
+    /**
      * MainLayerのtickイベント毎に実行される処理
-     * */
+     */
     ParticleEmitter.prototype.update = function (goalX, goalY) {
         // 発生装置はgoalに徐々に近づいていく。
         var dx = goalX - this._emitX;
@@ -219,9 +273,9 @@ var ParticleEmitter = (function (_super) {
         // アニメーション中のパーティクルの状態を更新
         this.updateParticleList();
     };
-    /*
-     *　パーティクルを発生させる
-     * */
+    /**
+     * パーティクルを発生させる
+     */
     ParticleEmitter.prototype.emitParticle = function () {
         var particle = this.getParticle();
         particle.init(this._emitX, this._emitY, this._vx, this._vy);
@@ -229,36 +283,44 @@ var ParticleEmitter = (function (_super) {
         // アニメーション中のパーティクルとして設定
         this._animationParticles.push(particle);
     };
-    /*
-     *　パーティクルのアニメーション
-     * */
-    ParticleEmitter.prototype.updateParticles = function () {
+    /**
+     * パーティクルのアニメーション
+     */
+    ParticleEmitter.prototype.updateParticleList = function () {
         var windowWidth = window.innerWidth;
         var windowHeight = window.innerHeight;
         for (var i = 0; i < this._animationParticles.length; i++) {
-            var particle = this._animationParticles[i];
-            if (!particle.isDead) {
-                if (particle.y >= windowHeight - 50) {
-                    particle.vy *= -0.5;
-                    particle.y = windowHeight - 50;
-                }
-                if (particle.x >= windowWidth) {
-                    particle.vx *= -0.4;
-                    particle.x = windowWidth;
-                }
-                else if (particle.x <= 0) {
-                    particle.vx *= -0.4;
-                    particle.x = 0;
-                }
-                particle.update();
-            }
-            else {
-                // particleを取り除く
-                this.removeParticle(particle, i);
-            }
+            this.updateParticle(i, windowHeight, windowWidth);
         }
     };
-    /*
+    ParticleEmitter.prototype.updateParticle = function (i, windowHeight, windowWidth) {
+        var particle = this._animationParticles[i];
+        if (!particle.isDead) {
+            if (this._data.bounse) {
+                this.checkParticleBounse(particle, windowHeight, windowWidth);
+            }
+            particle.update();
+        }
+        else {
+            // particleを取り除く
+            this.removeParticle(particle, i);
+        }
+    };
+    ParticleEmitter.prototype.checkParticleBounse = function (particle, windowHeight, windowWidth) {
+        if (particle.y >= windowHeight - 50) {
+            particle.vy *= -0.5;
+            particle.y = windowHeight - 50;
+        }
+        if (particle.x >= windowWidth) {
+            particle.vx *= -0.4;
+            particle.x = windowWidth;
+        }
+        else if (particle.x <= 0) {
+            particle.vx *= -0.4;
+            particle.x = 0;
+        }
+    };
+    /**
      * オブジェクトプールからパーティクルを取得。
      * プールにパーティクルが無ければ新規作成
      */
@@ -267,33 +329,53 @@ var ParticleEmitter = (function (_super) {
             return this._particlePool.shift();
         }
         else {
-            return new Particle();
+            return new Particle_1.Particle();
         }
     };
-    /*
+    /**
      * パーティクルを取り除く。
-     * */
+     */
     ParticleEmitter.prototype.removeParticle = function (particle, animationIndex) {
         // Containerからパーティクルをremove
         this.removeChild(particle);
         // アニメーションのパーティクルから取り除く。
         this._animationParticles.splice(animationIndex, 1);
-        if (this._particlePool.indexOf(particle) == -1) {
+        if (this._particlePool.indexOf(particle) === -1) {
             // プールにパーティクルが無いことを確認して格納
             this._particlePool.push(particle);
         }
     };
     return ParticleEmitter;
 }(createjs.Container));
-/*
+exports.ParticleEmitter = ParticleEmitter;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
  * パーティクルのクラス
- * */
-var Particle = (function (_super) {
+ */
+var Particle = /** @class */ (function (_super) {
     __extends(Particle, _super);
     function Particle() {
         var _this = _super.call(this) || this;
         var sudaNum = Math.floor(Math.random() * 3) + 1;
-        var bitmap = new Bitmap("./images/suda" + sudaNum + ".png");
+        var bitmap = new createjs.Bitmap("./images/suda" + sudaNum + ".png");
         bitmap.x = -50;
         bitmap.y = -50;
         _this.addChild(bitmap);
@@ -302,10 +384,10 @@ var Particle = (function (_super) {
         _this.mouseEnabled = false;
         return _this;
     }
-    /*
+    /**
      * パーティクルの初期化
      * @param parentVX, parentVY :親コンテナの速度。パーティクルの速度に影響を与える。
-     * */
+     */
     Particle.prototype.init = function (emitX, emitY, parentVX, parentVY) {
         this.x = emitX;
         this.y = emitY;
@@ -318,12 +400,12 @@ var Particle = (function (_super) {
         this.alpha = 1;
         this.rotation = 50 * Math.PI * (Math.random() - 0.5);
     };
-    /*
+    /**
      * パーティクルの時間経過処理。
      * _countがパーティクルの年齢。
      * _lifeを超えたら死亡する。
      *
-     * */
+     */
     Particle.prototype.update = function () {
         this._count++;
         if (this._count <= this._life) {
@@ -344,9 +426,24 @@ var Particle = (function (_super) {
     };
     return Particle;
 }(createjs.Container));
-window.addEventListener("DOMContentLoaded", function (event) {
-    new ParticleCreator();
-});
+exports.Particle = Particle;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ParticleSettingData = /** @class */ (function () {
+    function ParticleSettingData() {
+        this.bgColor = ["#222222", "#000000"];
+        this.bounse = true;
+    }
+    return ParticleSettingData;
+}());
+exports.ParticleSettingData = ParticleSettingData;
 
 
 /***/ })

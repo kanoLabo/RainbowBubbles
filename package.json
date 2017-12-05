@@ -1,0 +1,32 @@
+{
+  "name": "RainbowBubbles",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "",
+  "author": "tonkotsuboy <t.kano.624@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "gulp": "gulp",
+    "webpack": "webpack",
+    "start": "gulp start",
+    "tsc": "gulp tsCompile",
+    "tslint": "gulp tsLint"
+  },
+  "devDependencies": {
+    "@types/easeljs": "^1.0.0",
+    "@types/webfontloader": "^1.6.28",
+    "browser-sync": "^2.18.8",
+    "es6-promise": "^4.1.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-notify": "^3.0.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-tslint": "^8.0.0",
+    "require-dir": "^0.3.1",
+    "ts-loader": "^3.1.1",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1",
+    "webfontloader": "^1.6.27",
+    "webpack": "^3.8.1",
+    "webpack-stream": "^4.0.0"
+  }
+}

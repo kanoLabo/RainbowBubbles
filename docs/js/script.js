@@ -217,7 +217,7 @@ var ParticleEmitter = (function (_super) {
         this._emitX += this._vx;
         this._emitY += this._vy;
         // アニメーション中のパーティクルの状態を更新
-        this.updateParticles();
+        this.updateParticleList();
     };
     /*
      *　パーティクルを発生させる
